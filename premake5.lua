@@ -1,12 +1,14 @@
 include "conanbuildinfo.premake.lua"
 
+
 workspace "AdobeHTMLPlugin"
     conan_basic_setup()
     architecture "x64"
     startproject "Sandbox"
+    
+    libjsonSrc = "project/lib/ThirdParty/libjson_7.6.1/libjson/_internal/Source/"
 
-    configurations
-    {
+    configurations {
         "Debug",
         "Release"
     }
@@ -22,38 +24,34 @@ workspace "AdobeHTMLPlugin"
         linkoptions { conan_exelinkflags }
 
         buildoptions { "/Zc:wchar_t-" }
-        postbuildcommands { "if exist \"$(SolutionDir)extension\\plugin\\lib\\win\\$(TargetName).fcm\" del /Q \"$(SolutionDir)extension\\plugin\\lib\\win\\$(TargetName).fcm\"", "ren \"$(SolutionDir)extension\\plugin\\lib\\win\\$(TargetName).dll\" \"$(TargetName).fcm\"" }
 
         defines {
             "_WINDOWS",
             "USE_HTTP_SERVER",
-            "USE_RUNTIME",
-            "NDEBUG"
+            "USE_RUNTIME"
         }
 
-        files
-        {
+        files {
             "project/include/**.h",
             "project/src/**.cpp",
-            "project/lib/ThirdParty/libjson_7.6.1/libjson/_internal/Source/JSONAllocator.cpp",
-            "project/lib/ThirdParty/libjson_7.6.1/libjson/_internal/Source/JSONChildren.cpp",
-            "project/lib/ThirdParty/libjson_7.6.1/libjson/_internal/Source/JSONDebug.cpp",
-            "project/lib/ThirdParty/libjson_7.6.1/libjson/_internal/Source/JSONIterators.cpp",
-            "project/lib/ThirdParty/libjson_7.6.1/libjson/_internal/Source/JSONMemory.cpp",
-            "project/lib/ThirdParty/libjson_7.6.1/libjson/_internal/Source/JSONNode.cpp",
-            "project/lib/ThirdParty/libjson_7.6.1/libjson/_internal/Source/JSONNode_Mutex.cpp",
-            "project/lib/ThirdParty/libjson_7.6.1/libjson/_internal/Source/JSONPreparse.cpp",
-            "project/lib/ThirdParty/libjson_7.6.1/libjson/_internal/Source/JSONStream.cpp",
-            "project/lib/ThirdParty/libjson_7.6.1/libjson/_internal/Source/JSONValidator.cpp",
-            "project/lib/ThirdParty/libjson_7.6.1/libjson/_internal/Source/JSONWorker.cpp",
-            "project/lib/ThirdParty/libjson_7.6.1/libjson/_internal/Source/JSONWriter.cpp",
-            "project/lib/ThirdParty/libjson_7.6.1/libjson/_internal/Source/internalJSONNode.cpp",
-            "project/lib/ThirdParty/libjson_7.6.1/libjson/_internal/Source/libjson.cpp",
+            "%{libjsonSrc}JSONAllocator.cpp",
+            "%{libjsonSrc}JSONChildren.cpp",
+            "%{libjsonSrc}JSONDebug.cpp",
+            "%{libjsonSrc}JSONIterators.cpp",
+            "%{libjsonSrc}JSONMemory.cpp",
+            "%{libjsonSrc}JSONNode.cpp",
+            "%{libjsonSrc}JSONNode_Mutex.cpp",
+            "%{libjsonSrc}JSONPreparse.cpp",
+            "%{libjsonSrc}JSONStream.cpp",
+            "%{libjsonSrc}JSONValidator.cpp",
+            "%{libjsonSrc}JSONWorker.cpp",
+            "%{libjsonSrc}JSONWriter.cpp",
+            "%{libjsonSrc}internalJSONNode.cpp",
+            "%{libjsonSrc}libjson.cpp",
             "project/lib/ThirdParty/mongoose/mongoose.c"
         }
 
-        includedirs
-        {
+        includedirs {
             "$(SolutionDir)project/include",
             "$(SolutionDir)project/lib",
             "$(SolutionDir)project/lib/xdk/core/include/common",
@@ -70,8 +68,22 @@ workspace "AdobeHTMLPlugin"
             defines "_DEBUG"
             runtime "Debug"
             symbols "on"
+
+            defines {
+                "DEBUG"
+            }
         
         filter "configurations:Release"
             defines "_RELEASE"
             runtime "Release"
             optimize "on"
+
+            defines {
+                "NDEBUG"
+            }
+
+            postbuildcommands {
+                "if exist \"$(SolutionDir)extension\\plugin\\lib\\win\\$(TargetName).fcm\" del /Q \"$(SolutionDir)extension\\plugin\\lib\\win\\$(TargetName).fcm\"",
+                "ren \"$(SolutionDir)extension\\plugin\\lib\\win\\$(TargetName).dll\" \"$(TargetName).fcm\"",
+                "node \"$(SolutionDir)package.json\""
+            }
