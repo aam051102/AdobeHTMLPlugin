@@ -8,3 +8,8 @@ createZXP({
     version: 1.0,
     extractDirectory: path.join(__dirname, "debug/zxp"),
 }).catch((e) => console.error(e));
+
+/*
+buildoptions { "/Zc:wchar_t-" }
+postbuildcommands { "ren $(SolutionDir)extension\\plugin\\lib\\win\\$(TargetName).dll $(SolutionDir)extension\\plugin\\lib\\win\\$(TargetName).fcm" }
+*/

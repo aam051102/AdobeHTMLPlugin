@@ -394,7 +394,7 @@ namespace CreateJS
         FCM::U_Int16* pFilePath = new FCM::U_Int16[MAX_PATH];
 
         ASSERT(pFilePath);
-
+        
         ::GetModuleFileName((HINSTANCE)&__ImageBase, pFilePath, MAX_PATH);
         
         fullPath = Utils::ToString(pFilePath, pCallback);

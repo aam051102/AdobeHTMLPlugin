@@ -1,1 +1,15 @@
 node_modules/
+*.sln
+*.vcxproj
+*.vcxproj.*
+*.lock
+conanbuildinfo.premake.lua
+conanbuildinfo.txt
+conaninfo.txt
+graph_info.json
+.vs/
+project/obj/
+extension/plugin/lib/**/*.exp
+extension/plugin/lib/**/*.fcm
+extension/plugin/lib/**/*.lib
+extension/plugin/lib/**/*.pdb

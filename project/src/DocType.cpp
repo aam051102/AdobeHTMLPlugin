@@ -16,6 +16,7 @@
 
 #include "Application/Service/IOutputConsoleService.h"
 #include "PluginConfiguration.h"
+#include <memory>
 
 namespace CreateJS
 {
