@@ -8,7 +8,10 @@ conanbuildinfo.txt
 conaninfo.txt
 graph_info.json
 .vs/
+.rnd
+build/*
 project/obj/
+debug/
 extension/plugin/lib/**/*.exp
 extension/plugin/lib/**/*.fcm
 extension/plugin/lib/**/*.lib
