@@ -1,0 +1,7 @@
+[requires]
+
+
+[generators]
+premake
+
+[options]
