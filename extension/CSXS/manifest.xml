@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<ExtensionManifest Version="4.0" ExtensionBundleId="org.mad.createjs" ExtensionBundleVersion="1.0.1" ExtensionBundleName="Mad" 
+<ExtensionManifest Version="4.0" ExtensionBundleId="com.mad.createjs" ExtensionBundleVersion="1.0.1" ExtensionBundleName="Mad" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <ExtensionList>
-        <Extension Id="org.mad.createjs.PublishSettings" Version="1.0" />
-        <Extension Id="org.mad.createjs.Plugin" Version="1.0" />
+        <Extension Id="com.mad.createjs.PublishSettings" Version="1.0" />
+        <Extension Id="com.mad.createjs.Plugin" Version="1.0" />
     </ExtensionList>
     <ExecutionEnvironment>
         <HostList>
@@ -18,7 +18,7 @@
         </RequiredRuntimeList>
     </ExecutionEnvironment>
     <DispatchInfoList>
-        <Extension Id="org.mad.createjs.Plugin">
+        <Extension Id="com.mad.createjs.Plugin">
             <DispatchInfo >
                 <Resources>
                     <MainPath>./plugin/fcm.xml</MainPath>
@@ -38,7 +38,7 @@
                 </UI>
             </DispatchInfo>
         </Extension>
-        <Extension Id="org.mad.createjs.PublishSettings">
+        <Extension Id="com.mad.createjs.PublishSettings">
             <DispatchInfo >
                 <Resources>
                     <MainPath>./index.html</MainPath>

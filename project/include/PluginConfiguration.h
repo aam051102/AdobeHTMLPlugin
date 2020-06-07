@@ -20,13 +20,13 @@
 #define _PLUGIN_CONFIGURATION_H_
 
 #define PUBLISHER_NAME						"SamplePlugin"
-#define PUBLISHER_UNIVERSAL_NAME			"com.example.SamplePluginPublisher"
+#define PUBLISHER_UNIVERSAL_NAME			"com.mad.madcreativity"
 
 /* The value of the PUBLISH_SETTINGS_UI_ID has to be the HTML extension ID used for Publish settings dialog*/
-#define PUBLISH_SETTINGS_UI_ID				"com.example.SamplePlugin.PublishSettings"
+#define PUBLISH_SETTINGS_UI_ID				"com.mad.createjs.PublishSettings"
 
-#define DOCTYPE_NAME						"SamplePlugin"
-#define DOCTYPE_UNIVERSAL_NAME				"com.example.SamplePlugin"
+#define DOCTYPE_NAME						"CreateJS"
+#define DOCTYPE_UNIVERSAL_NAME				"com.mad.createjs"
 #define DOCTYPE_DESCRIPTION					"This document can be used to author content for sample runtime"
 
 /* The value of RUNTIME_FOLDER_NAME must be the name of the runtime folder present in EclipseProject/ExtensionContent. */
