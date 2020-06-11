@@ -16,3 +16,4 @@ extension/plugin/lib/**/*.exp
 extension/plugin/lib/**/*.fcm
 extension/plugin/lib/**/*.lib
 extension/plugin/lib/**/*.pdb
+extension/Runtime/runtime/anime.min.js

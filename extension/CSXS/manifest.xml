@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<ExtensionManifest Version="4.0" ExtensionBundleId="com.mad.createjs" ExtensionBundleVersion="1.0.1" ExtensionBundleName="Mad" 
+<ExtensionManifest Version="4.0" ExtensionBundleId="com.mad.AnimeJS" ExtensionBundleVersion="1.0.1" ExtensionBundleName="AnimeJS" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <ExtensionList>
-        <Extension Id="com.mad.createjs.PublishSettings" Version="1.0" />
-        <Extension Id="com.mad.createjs.Plugin" Version="1.0" />
+        <Extension Id="com.mad.AnimeJS.PublishSettings" Version="1.0" />
+        <Extension Id="com.mad.AnimeJS.Plugin" Version="1.0" />
     </ExtensionList>
     <ExecutionEnvironment>
         <HostList>
@@ -18,7 +18,7 @@
         </RequiredRuntimeList>
     </ExecutionEnvironment>
     <DispatchInfoList>
-        <Extension Id="com.mad.createjs.Plugin">
+        <Extension Id="com.mad.AnimeJS.Plugin">
             <DispatchInfo >
                 <Resources>
                     <MainPath>./plugin/fcm.xml</MainPath>
@@ -28,7 +28,7 @@
                 </Lifecycle>
                 <UI>
                     <Type>Panel</Type>
-                    <Menu>Mad</Menu>
+                    <Menu>AnimeJS</Menu>
                     <Geometry>
                         <Size>
                             <Height>200</Height>
@@ -38,7 +38,7 @@
                 </UI>
             </DispatchInfo>
         </Extension>
-        <Extension Id="com.mad.createjs.PublishSettings">
+        <Extension Id="com.mad.AnimeJS.PublishSettings">
             <DispatchInfo >
                 <Resources>
                     <MainPath>./index.html</MainPath>
@@ -48,7 +48,7 @@
                 </Lifecycle>
                 <UI>
                     <Type>ModalDialog</Type>
-                    <Menu>Publish Settings (Mad)</Menu>
+                    <Menu>Publish Settings (AnimeJS)</Menu>
                     <Geometry>
                         <Size>
                             <Height>512</Height>

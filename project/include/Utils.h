@@ -82,7 +82,7 @@
 
 /* -------------------------------------------------- Class Decl */
 
-namespace CreateJS
+namespace AnimeJS
 {
     class Utils
     {

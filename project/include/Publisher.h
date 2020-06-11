@@ -50,7 +50,7 @@ namespace Application
     }
 }
 
-namespace CreateJS
+namespace AnimeJS
 {
     class CPublisher;
     class ResourcePalette;
@@ -91,7 +91,7 @@ namespace DOM
 
 /* -------------------------------------------------- Class Decl */
 
-namespace CreateJS
+namespace AnimeJS
 {
 
     class CPublisher : public IPublisher, public FCMObjectBase

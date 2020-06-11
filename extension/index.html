@@ -164,7 +164,7 @@
             event.scope = "APPLICATION";
             event.type = "com.adobe.events.flash.extension.savestate";
             event.data = JSON.stringify(pubSettings);
-            event.extensionId = "com.mad.createjs.PublishSettings";
+            event.extensionId = "com.mad.AnimeJS.PublishSettings";
             csInterface.dispatchEvent(event);
 
             evalScript("fl.getDocumentDOM().publish();", publish_callback);
@@ -193,7 +193,7 @@
             event.scope = "APPLICATION";
             event.type = "com.adobe.events.flash.extensionLoaded";
             event.data = "Test Event";
-            event.extensionId = "com.mad.createjs.PublishSettings";
+            event.extensionId = "com.mad.AnimeJS.PublishSettings";
             csInterface.dispatchEvent(event);
         }
 

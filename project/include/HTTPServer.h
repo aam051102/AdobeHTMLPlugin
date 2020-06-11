@@ -48,7 +48,7 @@ struct ServerConfigParam
 
 /* -------------------------------------------------- Class Decl */
 
-namespace CreateJS
+namespace AnimeJS
 {
     class HTTPServer
     {

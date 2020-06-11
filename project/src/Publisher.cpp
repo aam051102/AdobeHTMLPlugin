@@ -69,7 +69,7 @@
 #include <algorithm>
 #include "PluginConfiguration.h"
 
-namespace CreateJS
+namespace AnimeJS
 {
 
     /* ----------------------------------------------------- CPublisher */
@@ -121,7 +121,7 @@ namespace CreateJS
 
         Init();
 
-        pCalloc = CreateJS::Utils::GetCallocService(GetCallback());
+        pCalloc = AnimeJS::Utils::GetCallocService(GetCallback());
         ASSERT(pCalloc.m_Ptr != NULL);
 
         res = pFlaDocument->GetTypeId(guid);
@@ -388,7 +388,7 @@ namespace CreateJS
         FCM::AutoPtr<FCM::IFCMUnknown> pUnk;
         FCM::AutoPtr<FCM::IFCMCalloc> pCalloc;
 
-        pCalloc = CreateJS::Utils::GetCallocService(GetCallback());
+        pCalloc = AnimeJS::Utils::GetCallocService(GetCallback());
         ASSERT(pCalloc.m_Ptr != NULL);
 
         // Read the output file name from the publish settings

@@ -19,45 +19,45 @@
 #ifndef _PLUGIN_CONFIGURATION_H_
 #define _PLUGIN_CONFIGURATION_H_
 
-#define PUBLISHER_NAME						"SamplePlugin"
-#define PUBLISHER_UNIVERSAL_NAME			"com.mad.madcreativity"
+#define PUBLISHER_NAME						"MadCreativity"
+#define PUBLISHER_UNIVERSAL_NAME			"com.mad.MadCreativity"
 
 /* The value of the PUBLISH_SETTINGS_UI_ID has to be the HTML extension ID used for Publish settings dialog*/
-#define PUBLISH_SETTINGS_UI_ID				"com.mad.createjs.PublishSettings"
+#define PUBLISH_SETTINGS_UI_ID				"com.mad.AnimeJS.PublishSettings"
 
-#define DOCTYPE_NAME						"CreateJS"
-#define DOCTYPE_UNIVERSAL_NAME				"com.mad.createjs"
-#define DOCTYPE_DESCRIPTION					"This document can be used to author content for sample runtime"
+#define DOCTYPE_NAME						"AnimeJS"
+#define DOCTYPE_UNIVERSAL_NAME				"com.mad.AnimeJS"
+#define DOCTYPE_DESCRIPTION					"Export to AnimeJS for better browser support"
 
 /* The value of RUNTIME_FOLDER_NAME must be the name of the runtime folder present in EclipseProject/ExtensionContent. */
-#define RUNTIME_FOLDER_NAME                 "SampleRuntime"
+#define RUNTIME_FOLDER_NAME                 "Runtime"
 
-namespace CreateJS
+namespace AnimeJS
 {
-    // {835B2A74-9646-43AD-AA86-A35F4E0ECD1B}
+    // {1cfc532d-a95b-4a33-b4c8-92fe85a8c9b3}
     const FCM::FCMCLSID CLSID_DocType =
-        {0x835b2a74, 0x9646, 0x43ad, {0xaa, 0x86, 0xa3, 0x5f, 0x4e, 0xe, 0xcd, 0x1b}};
+        {0x1cfc532d, 0xa95b, 0x4a33, {0xb4, 0xc8, 0x92, 0xfe, 0x85, 0xa8, 0xc9, 0xb3}};
 
-    // {50705258-F3B8-4CFF-929B-E10EC7DA8816}
+    // {e896c060-4e09-4ebe-a88f-e02c30c98207}
     const FCM::FCMCLSID CLSID_FeatureMatrix =
-        {0x50705258, 0xf3b8, 0x4cff, {0x92, 0x9b, 0xe1, 0xe, 0xc7, 0xda, 0x88, 0x16}};
+        {0xe896c060, 0x4e09, 0x4ebe, {0xa8, 0x8f, 0xe0, 0x2c, 0x30, 0xc9, 0x82, 0x07}};
 
-	    // {1635256D-2F63-4715-BC70-6B2948CC84D5}
+	// {783657c4-96b1-4c7b-84d8-9e1247ebdeaf}
     const FCM::FCMCLSID CLSID_Publisher =
-        {0x1635256d, 0x2f63, 0x4715, {0xbc, 0x70, 0x6b, 0x29, 0x48, 0xcc, 0x84, 0xd5}};
+        {0x783657c4, 0x96b1, 0x4c7b, {0x84, 0xd8, 0x9e, 0x12, 0x47, 0xeb, 0xde, 0xaf}};
 
 
-    // {D5830903-02D6-4133-A1F1-F272D29A1802}
+    // {a6d6d58d-916f-4df6-bbee-87f77407e2cb}
     const FCM::FCMCLSID CLSID_ResourcePalette =
-        {0xd5830903, 0x2d6, 0x4133, {0xa1, 0xf1, 0xf2, 0x72, 0xd2, 0x9a, 0x18, 0x2}};
+        {0xa6d6d58d, 0x916f, 0x4df6, {0xb, 0xee, 0x87, 0xf7, 0x74, 0x07, 0xe2, 0xcb}};
 
-    // {70E17C74-34DF-4C46-8F9D-900D2EC045E3}
+    // {91b82373-74bf-4efd-9fe8-e6b6dd2ab677}
     const FCM::FCMCLSID CLSID_TimelineBuilder =
-        {0x70e17c74, 0x34df, 0x4c46, {0x8f, 0x9d, 0x90, 0xd, 0x2e, 0xc0, 0x45, 0xe3}};
+        {0x91b82373, 0x74bf, 0x4efd, {0x9f, 0xe8, 0xe6, 0xb6, 0xdd, 0x2a, 0xb6, 0x77}};
 
-    // {442305C9-F02F-43A4-B259-D1CC39666A94}
+    // {3e6de25b-84b1-433c-a044-70245d846136}
     const FCM::FCMCLSID CLSID_TimelineBuilderFactory =
-        {0x442305c9, 0xf02f, 0x43a4, {0xb2, 0x59, 0xd1, 0xcc, 0x39, 0x66, 0x6a, 0x94}};
+        {0x3e6de25b, 0x84b1, 0x433c, {0xa0, 0x44, 0x70, 0x24, 0x5d, 0x84, 0x61, 0x36}};
 }
 
 

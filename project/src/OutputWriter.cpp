@@ -37,7 +37,7 @@
 #include "Windows.h"
 #endif
 
-namespace CreateJS
+namespace AnimeJS
 {
     static const std::string moveTo = "M";
     static const std::string lineTo = "L";
@@ -52,41 +52,16 @@ namespace CreateJS
         "<!DOCTYPE html>\r\n \
         <html>\r\n \
         <head> \r\n\
-            <script src=\"%s/cjs/createjs-2013.12.12.min.js\"></script> \r\n\
-            <script src=\"%s/cjs/movieclip-0.7.1.min.js\"></script> \r\n\
-            <script src=\"%s/cjs/easeljs-0.7.0.min.js\"></script> \r\n\
-            <script src=\"%s/cjs/tweenjs-0.5.1.min.js\"></script> \r\n\
-            <script src=\"%s/cjs/preloadjs-0.4.1.min.js\"></script> \r\n\
-           \r\n\
-            <script src=\"%s/dist/jquery-1.10.2.min.js\"></script> \r\n\
-            <script src=\"%s/runtime/resourcemanager.js\"></script> \r\n \
-            <script src=\"%s/runtime/utils.js\"></script>     \r\n\
-            <script src=\"%s/runtime/timelineanimator.js\"></script>    \r\n\
-            <script src=\"%s/runtime/player.js\"></script>     \r\n\
+            <script src=\"%s/runtime/anime.min.js\"></script>     \r\n\
             \r\n\
             <script type=\"text/javascript\"> \r\n\
-            \r\n\
-            var loader = new createjs.LoadQueue(false); \r\n\
-            loader.addEventListener(\"complete\", handleComplete); \r\n\
-            loader.loadManifest(\"./%s/images/B.png\"); \r\n\
-            function handleComplete() \r\n\
-                { \r\n\
-                $(document).ready(function() { \r\n\
-                \r\n\
-                \r\n\
-                    var canvas = document.getElementById(\"canvas\"); \r\n\
-                    var stage = new createjs.Stage(canvas);         \r\n\
-                    //pass FPS and use that in the player \r\n\
-                    init(stage, \"%s\", %d);             \r\n\
-                }); \r\n\
-                } \r\n\
             </script> \r\n\
         </head> \r\n\
         \r\n\
         <body> \r\n\
-            <canvas id=\"canvas\" width=\"%d\" height=\"%d\" style=\"background-color:#%06X\"> \r\n\
-                alternate content \r\n\
-            </canvas> \r\n\
+            <div id=\"canvas\" width=\"%d\" height=\"%d\" style=\"background-color:#%06X\"> \r\n\
+                \r\n\
+            </div> \r\n\
         </body> \r\n\
         </html>";
 
@@ -217,7 +192,7 @@ namespace CreateJS
     // Marks the end of a shape
     FCM::Result JSONOutputWriter::EndDefineShape(FCM::U_Int32 resId)
     {
-        m_shapeElem->push_back(JSONNode(("charid"), CreateJS::Utils::ToString(resId)));
+        m_shapeElem->push_back(JSONNode(("charid"), AnimeJS::Utils::ToString(resId)));
         m_shapeElem->push_back(*m_pathArray);
 
         m_pShapeArray->push_back(*m_shapeElem);
@@ -245,7 +220,7 @@ namespace CreateJS
     FCM::Result JSONOutputWriter::DefineSolidFillStyle(const DOM::Utils::COLOR& color)
     {
         std::string colorStr = Utils::ToString(color);
-        std::string colorOpacityStr = CreateJS::Utils::ToString((double)(color.alpha / 255.0));
+        std::string colorOpacityStr = AnimeJS::Utils::ToString((double)(color.alpha / 255.0));
 
         m_pathElem->push_back(JSONNode("color", colorStr.c_str()));
         m_pathElem->push_back(JSONNode("colorOpacity", colorOpacityStr.c_str()));
@@ -271,8 +246,8 @@ namespace CreateJS
 
         bitmapElem.set_name("image");
         
-        bitmapElem.push_back(JSONNode(("height"), CreateJS::Utils::ToString(height)));
-        bitmapElem.push_back(JSONNode(("width"), CreateJS::Utils::ToString(width)));
+        bitmapElem.push_back(JSONNode(("height"), AnimeJS::Utils::ToString(height)));
+        bitmapElem.push_back(JSONNode(("width"), AnimeJS::Utils::ToString(width)));
 
         FCM::AutoPtr<FCM::IFCMUnknown> pUnk;
         std::string bitmapRelPath;
@@ -313,7 +288,7 @@ namespace CreateJS
             res = bitmapExportService->ExportToFile(pMediaItem, pFilePath, 100);
             ASSERT(FCM_SUCCESS_CODE(res));
 
-            pCalloc = CreateJS::Utils::GetCallocService(m_pCallback);
+            pCalloc = AnimeJS::Utils::GetCallocService(m_pCallback);
             ASSERT(pCalloc.m_Ptr != NULL);
 
             pCalloc->Free(pFilePath);
@@ -487,16 +462,16 @@ namespace CreateJS
         {
             if (segment.segmentType == DOM::Utils::LINE_SEGMENT)
             {
-                m_pathCmdStr.append(CreateJS::Utils::ToString((double)(segment.line.endPoint1.x)));
+                m_pathCmdStr.append(AnimeJS::Utils::ToString((double)(segment.line.endPoint1.x)));
                 m_pathCmdStr.append(space);
-                m_pathCmdStr.append(CreateJS::Utils::ToString((double)(segment.line.endPoint1.y)));
+                m_pathCmdStr.append(AnimeJS::Utils::ToString((double)(segment.line.endPoint1.y)));
                 m_pathCmdStr.append(space);
             }
             else
             {
-                m_pathCmdStr.append(CreateJS::Utils::ToString((double)(segment.quadBezierCurve.anchor1.x)));
+                m_pathCmdStr.append(AnimeJS::Utils::ToString((double)(segment.quadBezierCurve.anchor1.x)));
                 m_pathCmdStr.append(space);
-                m_pathCmdStr.append(CreateJS::Utils::ToString((double)(segment.quadBezierCurve.anchor1.y)));
+                m_pathCmdStr.append(AnimeJS::Utils::ToString((double)(segment.quadBezierCurve.anchor1.y)));
                 m_pathCmdStr.append(space);
             }
             m_firstSegment = false;
@@ -506,22 +481,22 @@ namespace CreateJS
         {
             m_pathCmdStr.append(lineTo);
             m_pathCmdStr.append(space);
-            m_pathCmdStr.append(CreateJS::Utils::ToString((double)(segment.line.endPoint2.x)));
+            m_pathCmdStr.append(AnimeJS::Utils::ToString((double)(segment.line.endPoint2.x)));
             m_pathCmdStr.append(space);
-            m_pathCmdStr.append(CreateJS::Utils::ToString((double)(segment.line.endPoint2.y)));
+            m_pathCmdStr.append(AnimeJS::Utils::ToString((double)(segment.line.endPoint2.y)));
             m_pathCmdStr.append(space);
         }
         else
         {
             m_pathCmdStr.append(bezierCurveTo);
             m_pathCmdStr.append(space);
-            m_pathCmdStr.append(CreateJS::Utils::ToString((double)(segment.quadBezierCurve.control.x)));
+            m_pathCmdStr.append(AnimeJS::Utils::ToString((double)(segment.quadBezierCurve.control.x)));
             m_pathCmdStr.append(space);
-            m_pathCmdStr.append(CreateJS::Utils::ToString((double)(segment.quadBezierCurve.control.y)));
+            m_pathCmdStr.append(AnimeJS::Utils::ToString((double)(segment.quadBezierCurve.control.y)));
             m_pathCmdStr.append(space);
-            m_pathCmdStr.append(CreateJS::Utils::ToString((double)(segment.quadBezierCurve.anchor2.x)));
+            m_pathCmdStr.append(AnimeJS::Utils::ToString((double)(segment.quadBezierCurve.anchor2.x)));
             m_pathCmdStr.append(space);
-            m_pathCmdStr.append(CreateJS::Utils::ToString((double)(segment.quadBezierCurve.anchor2.y)));
+            m_pathCmdStr.append(AnimeJS::Utils::ToString((double)(segment.quadBezierCurve.anchor2.y)));
             m_pathCmdStr.append(space);
         }
 
@@ -605,7 +580,7 @@ namespace CreateJS
 
         if (m_strokeStyle.type == SOLID_STROKE_STYLE_TYPE)
         {
-            m_pathElem->push_back(JSONNode("strokeWidth", CreateJS::Utils::ToString((double)m_strokeStyle.solidStrokeStyle.thickness).c_str()));
+            m_pathElem->push_back(JSONNode("strokeWidth", AnimeJS::Utils::ToString((double)m_strokeStyle.solidStrokeStyle.thickness).c_str()));
             m_pathElem->push_back(JSONNode("fill", "none"));
             m_pathElem->push_back(JSONNode("strokeLinecap", Utils::ToString(m_strokeStyle.solidStrokeStyle.capStyle.type).c_str()));
             m_pathElem->push_back(JSONNode("strokeLinejoin", Utils::ToString(m_strokeStyle.solidStrokeStyle.joinStyle.type).c_str()));
@@ -614,7 +589,7 @@ namespace CreateJS
             {
                 m_pathElem->push_back(JSONNode(
                     "stroke-miterlimit", 
-                    CreateJS::Utils::ToString((double)m_strokeStyle.solidStrokeStyle.joinStyle.miterJoinProp.miterLimit).c_str()));
+                    AnimeJS::Utils::ToString((double)m_strokeStyle.solidStrokeStyle.joinStyle.miterJoinProp.miterLimit).c_str()));
             }
             m_pathElem->push_back(JSONNode("pathType", "Stroke"));
         }
@@ -669,9 +644,9 @@ namespace CreateJS
 
         bitmapElem.set_name("image");
         
-        bitmapElem.push_back(JSONNode(("charid"), CreateJS::Utils::ToString(resId)));
-        bitmapElem.push_back(JSONNode(("height"), CreateJS::Utils::ToString(height)));
-        bitmapElem.push_back(JSONNode(("width"), CreateJS::Utils::ToString(width)));
+        bitmapElem.push_back(JSONNode(("charid"), AnimeJS::Utils::ToString(resId)));
+        bitmapElem.push_back(JSONNode(("height"), AnimeJS::Utils::ToString(height)));
+        bitmapElem.push_back(JSONNode(("width"), AnimeJS::Utils::ToString(width)));
 
         FCM::AutoPtr<FCM::IFCMUnknown> pUnk;
         std::string bitmapRelPath;
@@ -712,7 +687,7 @@ namespace CreateJS
             res = bitmapExportService->ExportToFile(pMediaItem, pFilePath, 100);
             ASSERT(FCM_SUCCESS_CODE(res));
 
-            pCalloc = CreateJS::Utils::GetCallocService(m_pCallback);
+            pCalloc = AnimeJS::Utils::GetCallocService(m_pCallback);
             ASSERT(pCalloc.m_Ptr != NULL);
 
             pCalloc->Free(pFilePath);
@@ -752,7 +727,7 @@ namespace CreateJS
         }
 
         
-        textElem.push_back(JSONNode(("charid"), CreateJS::Utils::ToString(resId)));
+        textElem.push_back(JSONNode(("charid"), AnimeJS::Utils::ToString(resId)));
         textElem.push_back(JSONNode(("displayText"),txt ));
         textElem.push_back(JSONNode(("font"),name));
         textElem.push_back(JSONNode("color", colorStr.c_str()));
@@ -774,7 +749,7 @@ namespace CreateJS
         std::string name;
 
         soundElem.set_name("sound");
-        soundElem.push_back(JSONNode(("charid"), CreateJS::Utils::ToString(resId)));
+        soundElem.push_back(JSONNode(("charid"), AnimeJS::Utils::ToString(resId)));
         
         FCM::AutoPtr<FCM::IFCMUnknown> pUnk;
         std::string soundRelPath;
@@ -808,7 +783,7 @@ namespace CreateJS
             FCM::StringRep16 pFilePath = Utils::ToString16(soundExportPath, m_pCallback);
             res = soundExportService->ExportToFile(pMediaItem, pFilePath);
             ASSERT(FCM_SUCCESS_CODE(res));
-            pCalloc = CreateJS::Utils::GetCallocService(m_pCallback);
+            pCalloc = AnimeJS::Utils::GetCallocService(m_pCallback);
             ASSERT(pCalloc.m_Ptr != NULL);
             pCalloc->Free(pFilePath);
         }
@@ -1002,9 +977,9 @@ namespace CreateJS
         JSONNode commandElement(JSON_NODE);
 
         commandElement.push_back(JSONNode("cmdType", "Place"));
-        commandElement.push_back(JSONNode("charid", CreateJS::Utils::ToString(resId)));
-        commandElement.push_back(JSONNode("objectId", CreateJS::Utils::ToString(objectId)));
-        commandElement.push_back(JSONNode("placeAfter", CreateJS::Utils::ToString(placeAfterObjectId)));
+        commandElement.push_back(JSONNode("charid", AnimeJS::Utils::ToString(resId)));
+        commandElement.push_back(JSONNode("objectId", AnimeJS::Utils::ToString(objectId)));
+        commandElement.push_back(JSONNode("placeAfter", AnimeJS::Utils::ToString(placeAfterObjectId)));
 
         if (pMatrix)
         {
@@ -1028,8 +1003,8 @@ namespace CreateJS
         FCM::AutoPtr<DOM::FrameElement::ISound> pSound;
 
         commandElement.push_back(JSONNode("cmdType", "Place"));
-        commandElement.push_back(JSONNode("charid", CreateJS::Utils::ToString(resId)));
-        commandElement.push_back(JSONNode("objectId", CreateJS::Utils::ToString(objectId)));
+        commandElement.push_back(JSONNode("charid", AnimeJS::Utils::ToString(resId)));
+        commandElement.push_back(JSONNode("objectId", AnimeJS::Utils::ToString(objectId)));
 
         pSound = pUnknown;
         if (pSound)
@@ -1045,15 +1020,15 @@ namespace CreateJS
             ASSERT(FCM_SUCCESS_CODE(res));
 
             commandElement.push_back(JSONNode("loopMode", 
-                CreateJS::Utils::ToString(lMode.loopMode)));
+                AnimeJS::Utils::ToString(lMode.loopMode)));
             commandElement.push_back(JSONNode("repeatCount", 
-                CreateJS::Utils::ToString(lMode.repeatCount)));
+                AnimeJS::Utils::ToString(lMode.repeatCount)));
 
             res = pSound->GetSyncMode(syncMode);
             ASSERT(FCM_SUCCESS_CODE(res));
 
             commandElement.push_back(JSONNode("syncMode", 
-                CreateJS::Utils::ToString(syncMode)));
+                AnimeJS::Utils::ToString(syncMode)));
 
             // We should not get SOUND_SYNC_STOP as for stop, "RemoveObject" command will
             // be generated by Exporter Service.
@@ -1063,9 +1038,9 @@ namespace CreateJS
             ASSERT(FCM_SUCCESS_CODE(res));
 
             commandElement.push_back(JSONNode("LimitInPos44", 
-                CreateJS::Utils::ToString(soundLimit.inPos44)));
+                AnimeJS::Utils::ToString(soundLimit.inPos44)));
             commandElement.push_back(JSONNode("LimitOutPos44", 
-                CreateJS::Utils::ToString(soundLimit.outPos44)));
+                AnimeJS::Utils::ToString(soundLimit.outPos44)));
         }
 
         m_pCommandArray->push_back(commandElement);
@@ -1080,7 +1055,7 @@ namespace CreateJS
         JSONNode commandElement(JSON_NODE);
 
         commandElement.push_back(JSONNode("cmdType", "Remove"));
-        commandElement.push_back(JSONNode("objectId", CreateJS::Utils::ToString(objectId)));
+        commandElement.push_back(JSONNode("objectId", AnimeJS::Utils::ToString(objectId)));
 
         m_pCommandArray->push_back(commandElement);
 
@@ -1095,8 +1070,8 @@ namespace CreateJS
         JSONNode commandElement(JSON_NODE);
 
         commandElement.push_back(JSONNode("cmdType", "UpdateZOrder"));
-        commandElement.push_back(JSONNode("objectId", CreateJS::Utils::ToString(objectId)));
-        commandElement.push_back(JSONNode("placeAfter", CreateJS::Utils::ToString(placeAfterObjectId)));
+        commandElement.push_back(JSONNode("objectId", AnimeJS::Utils::ToString(objectId)));
+        commandElement.push_back(JSONNode("placeAfter", AnimeJS::Utils::ToString(placeAfterObjectId)));
 
         m_pCommandArray->push_back(commandElement);
 
@@ -1114,8 +1089,8 @@ namespace CreateJS
         JSONNode commandElement(JSON_NODE);
 
         commandElement.push_back(JSONNode("cmdType", "UpdateMask"));
-        commandElement.push_back(JSONNode("objectId", CreateJS::Utils::ToString(objectId)));
-        commandElement.push_back(JSONNode("maskTill", CreateJS::Utils::ToString(maskTillObjectId)));
+        commandElement.push_back(JSONNode("objectId", AnimeJS::Utils::ToString(objectId)));
+        commandElement.push_back(JSONNode("maskTill", AnimeJS::Utils::ToString(maskTillObjectId)));
 
         m_pCommandArray->push_back(commandElement);
         */
@@ -1130,7 +1105,7 @@ namespace CreateJS
         JSONNode commandElement(JSON_NODE);
 
         commandElement.push_back(JSONNode("cmdType", "UpdateBlendMode"));
-        commandElement.push_back(JSONNode("objectId", CreateJS::Utils::ToString(objectId)));
+        commandElement.push_back(JSONNode("objectId", AnimeJS::Utils::ToString(objectId)));
         if(blendMode == 0)
             commandElement.push_back(JSONNode("blendMode","Normal"));
         else if(blendMode == 1)
@@ -1172,7 +1147,7 @@ namespace CreateJS
         JSONNode commandElement(JSON_NODE);
 
         commandElement.push_back(JSONNode("cmdType", "UpdateVisibility"));
-        commandElement.push_back(JSONNode("objectId", CreateJS::Utils::ToString(objectId)));
+        commandElement.push_back(JSONNode("objectId", AnimeJS::Utils::ToString(objectId)));
 
         if (visible)
         {
@@ -1196,7 +1171,7 @@ namespace CreateJS
         FCM::Result res;
         JSONNode commandElement(JSON_NODE);
         commandElement.push_back(JSONNode("cmdType", "UpdateFilter"));
-        commandElement.push_back(JSONNode("objectId", CreateJS::Utils::ToString(objectId)));
+        commandElement.push_back(JSONNode("objectId", AnimeJS::Utils::ToString(objectId)));
         FCM::AutoPtr<DOM::GraphicFilter::IDropShadowFilter> pDropShadowFilter = pFilter;
         FCM::AutoPtr<DOM::GraphicFilter::IBlurFilter> pBlurFilter = pFilter;
         FCM::AutoPtr<DOM::GraphicFilter::IGlowFilter> pGlowFilter = pFilter;
@@ -1234,19 +1209,19 @@ namespace CreateJS
 
             res = pDropShadowFilter->GetAngle(angle);
             ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("angle", CreateJS::Utils::ToString((double)angle)));
+            commandElement.push_back(JSONNode("angle", AnimeJS::Utils::ToString((double)angle)));
 
             res = pDropShadowFilter->GetBlurX(blurX);
             ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("blurX", CreateJS::Utils::ToString((double)blurX)));
+            commandElement.push_back(JSONNode("blurX", AnimeJS::Utils::ToString((double)blurX)));
 
             res = pDropShadowFilter->GetBlurY(blurY);
             ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("blurY", CreateJS::Utils::ToString((double)blurY)));
+            commandElement.push_back(JSONNode("blurY", AnimeJS::Utils::ToString((double)blurY)));
 
             res = pDropShadowFilter->GetDistance(distance);
             ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("distance", CreateJS::Utils::ToString((double)distance)));
+            commandElement.push_back(JSONNode("distance", AnimeJS::Utils::ToString((double)distance)));
 
             res = pDropShadowFilter->GetHideObject(hideObject);
             ASSERT(FCM_SUCCESS_CODE(res));
@@ -1292,7 +1267,7 @@ namespace CreateJS
 
             res = pDropShadowFilter->GetStrength(strength);
             ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("strength", CreateJS::Utils::ToString(strength)));
+            commandElement.push_back(JSONNode("strength", AnimeJS::Utils::ToString(strength)));
 
             res = pDropShadowFilter->GetShadowColor(color);
             ASSERT(FCM_SUCCESS_CODE(res));
@@ -1322,11 +1297,11 @@ namespace CreateJS
 
             res = pBlurFilter->GetBlurX(blurX);
             ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("blurX", CreateJS::Utils::ToString((double)blurX)));
+            commandElement.push_back(JSONNode("blurX", AnimeJS::Utils::ToString((double)blurX)));
 
             res = pBlurFilter->GetBlurY(blurY);
             ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("blurY", CreateJS::Utils::ToString((double)blurY)));
+            commandElement.push_back(JSONNode("blurY", AnimeJS::Utils::ToString((double)blurY)));
 
             res = pBlurFilter->GetQuality(qualityType);
             ASSERT(FCM_SUCCESS_CODE(res));
@@ -1364,11 +1339,11 @@ namespace CreateJS
 
             res = pGlowFilter->GetBlurX(blurX);
             ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("blurX", CreateJS::Utils::ToString((double)blurX)));
+            commandElement.push_back(JSONNode("blurX", AnimeJS::Utils::ToString((double)blurX)));
 
             res = pGlowFilter->GetBlurY(blurY);
             ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("blurY", CreateJS::Utils::ToString((double)blurY)));
+            commandElement.push_back(JSONNode("blurY", AnimeJS::Utils::ToString((double)blurY)));
 
             res = pGlowFilter->GetInnerShadow(innerShadow);
             ASSERT(FCM_SUCCESS_CODE(res));
@@ -1403,7 +1378,7 @@ namespace CreateJS
 
             res = pGlowFilter->GetStrength(strength);
             ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("strength", CreateJS::Utils::ToString(strength)));
+            commandElement.push_back(JSONNode("strength", AnimeJS::Utils::ToString(strength)));
 
             res = pGlowFilter->GetShadowColor(color);
             ASSERT(FCM_SUCCESS_CODE(res));
@@ -1441,19 +1416,19 @@ namespace CreateJS
 
             res = pBevelFilter->GetAngle(angle);
             ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("angle", CreateJS::Utils::ToString((double)angle)));
+            commandElement.push_back(JSONNode("angle", AnimeJS::Utils::ToString((double)angle)));
 
             res = pBevelFilter->GetBlurX(blurX);
             ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("blurX", CreateJS::Utils::ToString((double)blurX)));
+            commandElement.push_back(JSONNode("blurX", AnimeJS::Utils::ToString((double)blurX)));
 
             res = pBevelFilter->GetBlurY(blurY);
             ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("blurY", CreateJS::Utils::ToString((double)blurY)));
+            commandElement.push_back(JSONNode("blurY", AnimeJS::Utils::ToString((double)blurY)));
 
             res = pBevelFilter->GetDistance(distance);
             ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("distance", CreateJS::Utils::ToString((double)distance)));
+            commandElement.push_back(JSONNode("distance", AnimeJS::Utils::ToString((double)distance)));
 
             res = pBevelFilter->GetHighlightColor(highlightColor);
             ASSERT(FCM_SUCCESS_CODE(res));
@@ -1482,7 +1457,7 @@ namespace CreateJS
 
             res = pBevelFilter->GetStrength(strength);
             ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("strength", CreateJS::Utils::ToString(strength)));
+            commandElement.push_back(JSONNode("strength", AnimeJS::Utils::ToString(strength)));
 
             res = pBevelFilter->GetShadowColor(color);
             ASSERT(FCM_SUCCESS_CODE(res));
@@ -1526,19 +1501,19 @@ namespace CreateJS
 
             res = pGradientGlowFilter->GetAngle(angle);
             ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("angle", CreateJS::Utils::ToString((double)angle)));
+            commandElement.push_back(JSONNode("angle", AnimeJS::Utils::ToString((double)angle)));
 
             res = pGradientGlowFilter->GetBlurX(blurX);
             ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("blurX", CreateJS::Utils::ToString((double)blurX)));
+            commandElement.push_back(JSONNode("blurX", AnimeJS::Utils::ToString((double)blurX)));
 
             res = pGradientGlowFilter->GetBlurY(blurY);
             ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("blurY", CreateJS::Utils::ToString((double)blurY)));
+            commandElement.push_back(JSONNode("blurY", AnimeJS::Utils::ToString((double)blurY)));
 
             res = pGradientGlowFilter->GetDistance(distance);
             ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("distance", CreateJS::Utils::ToString((double)distance)));
+            commandElement.push_back(JSONNode("distance", AnimeJS::Utils::ToString((double)distance)));
 
             res = pGradientGlowFilter->GetKnockout(knockOut);
             ASSERT(FCM_SUCCESS_CODE(res));
@@ -1562,7 +1537,7 @@ namespace CreateJS
 
             res = pGradientGlowFilter->GetStrength(strength);
             ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("strength", CreateJS::Utils::ToString(strength)));
+            commandElement.push_back(JSONNode("strength", AnimeJS::Utils::ToString(strength)));
 
             res = pGradientGlowFilter->GetFilterType(filterType);
             ASSERT(FCM_SUCCESS_CODE(res));
@@ -1638,19 +1613,19 @@ namespace CreateJS
 
             res = pGradientBevelFilter->GetAngle(angle);
             ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("angle", CreateJS::Utils::ToString((double)angle)));
+            commandElement.push_back(JSONNode("angle", AnimeJS::Utils::ToString((double)angle)));
 
             res = pGradientBevelFilter->GetBlurX(blurX);
             ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("blurX", CreateJS::Utils::ToString((double)blurX)));
+            commandElement.push_back(JSONNode("blurX", AnimeJS::Utils::ToString((double)blurX)));
 
             res = pGradientBevelFilter->GetBlurY(blurY);
             ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("blurY", CreateJS::Utils::ToString((double)blurY)));
+            commandElement.push_back(JSONNode("blurY", AnimeJS::Utils::ToString((double)blurY)));
 
             res = pGradientBevelFilter->GetDistance(distance);
             ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("distance", CreateJS::Utils::ToString((double)distance)));
+            commandElement.push_back(JSONNode("distance", AnimeJS::Utils::ToString((double)distance)));
 
             res = pGradientBevelFilter->GetKnockout(knockOut);
             ASSERT(FCM_SUCCESS_CODE(res));
@@ -1674,7 +1649,7 @@ namespace CreateJS
 
             res = pGradientBevelFilter->GetStrength(strength);
             ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("strength", CreateJS::Utils::ToString(strength)));
+            commandElement.push_back(JSONNode("strength", AnimeJS::Utils::ToString(strength)));
 
             res = pGradientBevelFilter->GetFilterType(filterType);
             ASSERT(FCM_SUCCESS_CODE(res));
@@ -1746,19 +1721,19 @@ namespace CreateJS
 
             res = pAdjustColorFilter->GetBrightness(brightness);
             ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("brightness", CreateJS::Utils::ToString((double)brightness)));
+            commandElement.push_back(JSONNode("brightness", AnimeJS::Utils::ToString((double)brightness)));
 
             res = pAdjustColorFilter->GetContrast(contrast);
             ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("contrast", CreateJS::Utils::ToString((double)contrast)));
+            commandElement.push_back(JSONNode("contrast", AnimeJS::Utils::ToString((double)contrast)));
 
             res = pAdjustColorFilter->GetSaturation(saturation);
             ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("saturation", CreateJS::Utils::ToString((double)saturation)));
+            commandElement.push_back(JSONNode("saturation", AnimeJS::Utils::ToString((double)saturation)));
 
             res = pAdjustColorFilter->GetHue(hue);
             ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("hue", CreateJS::Utils::ToString((double)hue)));
+            commandElement.push_back(JSONNode("hue", AnimeJS::Utils::ToString((double)hue)));
         }
 
         m_pCommandArray->push_back(commandElement);
@@ -1775,8 +1750,8 @@ namespace CreateJS
         std::string transformMat;
 
         commandElement.push_back(JSONNode("cmdType", "Move"));
-        commandElement.push_back(JSONNode("objectId", CreateJS::Utils::ToString(objectId)));
-        transformMat = CreateJS::Utils::ToString(matrix);
+        commandElement.push_back(JSONNode("objectId", AnimeJS::Utils::ToString(objectId)));
+        transformMat = AnimeJS::Utils::ToString(matrix);
         commandElement.push_back(JSONNode("transformMatrix", transformMat.c_str()));
 
         m_pCommandArray->push_back(commandElement);
@@ -1796,7 +1771,7 @@ namespace CreateJS
 
     FCM::Result JSONTimelineWriter::ShowFrame(FCM::U_Int32 frameNum)
     {
-        m_pFrameElement->push_back(JSONNode(("num"), CreateJS::Utils::ToString(frameNum)));
+        m_pFrameElement->push_back(JSONNode(("num"), AnimeJS::Utils::ToString(frameNum)));
         m_pFrameElement->push_back(*m_pCommandArray);
         m_pFrameArray->push_back(*m_pFrameElement);
 
@@ -1916,7 +1891,7 @@ namespace CreateJS
         {
             m_pTimelineElement->push_back(
                 JSONNode(("charid"), 
-                CreateJS::Utils::ToString(resId)));
+                AnimeJS::Utils::ToString(resId)));
         }
 
         m_pTimelineElement->push_back(*m_pFrameArray);

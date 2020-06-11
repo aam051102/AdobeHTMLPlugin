@@ -18,7 +18,7 @@
 #include "PluginConfiguration.h"
 #include <memory>
 
-namespace CreateJS
+namespace AnimeJS
 {
 
     /* -------------------------------------------------- Constants */
@@ -104,7 +104,7 @@ namespace CreateJS
         outputConsoleService->Trace(outputString);
         outputConsoleService->Trace(path);
 
-        FCM::AutoPtr<FCM::IFCMCalloc> pCalloc = CreateJS::Utils::GetCallocService(pCallback);
+        FCM::AutoPtr<FCM::IFCMCalloc> pCalloc = AnimeJS::Utils::GetCallocService(pCallback);
         ASSERT(pCalloc.m_Ptr != NULL);
   
         pCalloc->Free(outputString);

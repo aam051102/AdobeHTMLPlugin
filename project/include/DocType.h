@@ -35,7 +35,7 @@
 using namespace FCM;
 using namespace DocType;
 
-namespace CreateJS
+namespace AnimeJS
 {
     class CDocType;
     class FeatureMatrix;
@@ -54,7 +54,7 @@ namespace CreateJS
 
 /* -------------------------------------------------- Structs / Unions */
 
-namespace CreateJS
+namespace AnimeJS
 {
     typedef std::map<std::string, Value*> StrValueMap;
     typedef std::map<std::string, Property*> StrPropertyMap;
@@ -64,7 +64,7 @@ namespace CreateJS
 
 /* -------------------------------------------------- Class Decl */
 
-namespace CreateJS
+namespace AnimeJS
 {
     class CDocType : public DocType::IDocType, public FCM::FCMObjectBase
     {

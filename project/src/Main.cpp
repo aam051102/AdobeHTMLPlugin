@@ -15,9 +15,9 @@
 #include "Publisher.h"
 #include "Utils.h"
 
-namespace CreateJS
+namespace AnimeJS
 {
-    BEGIN_MODULE(CreateJSModule)
+    BEGIN_MODULE(AnimeJSModule)
 
         BEGIN_CLASS_ENTRY
 
@@ -40,7 +40,7 @@ namespace CreateJS
     END_MODULE
 
     
-    CreateJSModule g_createJSModule;
+        AnimeJSModule g_animeJSModule;
 
     extern "C" FCMPLUGIN_IMP_EXP FCM::Result PluginBoot(FCM::PIFCMCallback pCallback)
     {
@@ -48,12 +48,12 @@ namespace CreateJS
         std::string langCode;
         std::string modulePath;
 
-        res = g_createJSModule.init(pCallback);
+        res = g_animeJSModule.init(pCallback);
 
         Utils::GetModuleFilePath(modulePath, pCallback);
         Utils::GetLanguageCode(pCallback, langCode);
 
-        g_createJSModule.SetResPath(modulePath + "../res/" + langCode + "/");
+        g_animeJSModule.SetResPath(modulePath + "../res/" + langCode + "/");
         return res;
     }
 
@@ -61,7 +61,7 @@ namespace CreateJS
         FCM::PIFCMCalloc pCalloc, 
         FCM::PFCMClassInterfaceInfo* ppClassInfo)
     {
-        return g_createJSModule.getClassInfo(pCalloc, ppClassInfo);
+        return g_animeJSModule.getClassInfo(pCalloc, ppClassInfo);
     }
 
     extern "C" FCMPLUGIN_IMP_EXP FCM::Result PluginGetClassObject(
@@ -70,7 +70,7 @@ namespace CreateJS
         FCM::ConstRefFCMIID iid, 
         FCM::PPVoid pAny)
     {
-        return g_createJSModule.getClassObject(pUnkOuter, clsid, iid, pAny);
+        return g_animeJSModule.getClassObject(pUnkOuter, clsid, iid, pAny);
     }
 
     // Register the plugin - Register plugin as both DocType and Publisher
@@ -83,7 +83,7 @@ namespace CreateJS
         AutoPtr<IFCMDictionary> pPlugins;
         pDictionary->AddLevel((const FCM::StringRep8)kFCMComponent, pPlugins.m_Ptr);
     
-        res = RegisterDocType(pPlugins, g_createJSModule.GetResPath());
+        res = RegisterDocType(pPlugins, g_animeJSModule.GetResPath());
         if (FCM_FAILURE_CODE(res))
         {
             return res;
@@ -96,12 +96,12 @@ namespace CreateJS
 
     extern "C" FCMPLUGIN_IMP_EXP FCM::U_Int32 PluginCanUnloadNow(void)
     {
-        return g_createJSModule.canUnloadNow();
+        return g_animeJSModule.canUnloadNow();
     }
 
     extern "C" FCMPLUGIN_IMP_EXP FCM::Result PluginShutdown()
     {
-        g_createJSModule.finalize();
+        g_animeJSModule.finalize();
 
         return FCM_SUCCESS;
     }

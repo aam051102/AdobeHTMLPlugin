@@ -50,7 +50,7 @@
 EXTERN_C IMAGE_DOS_HEADER __ImageBase;
 #endif
 
-namespace CreateJS
+namespace AnimeJS
 {
     static std::string comma = ",";
 }
@@ -61,7 +61,7 @@ namespace CreateJS
 
 /* -------------------------------------------------- Utils */
 
-namespace CreateJS
+namespace AnimeJS
 {
     FCM::AutoPtr<FCM::IFCMStringUtils> Utils::GetStringUtilsService(FCM::PIFCMCallback pCallback)
     {
@@ -501,7 +501,7 @@ namespace CreateJS
             vsnprintf(buffer, 1024, fmt, args);
             va_end(args);
 
-            FCM::AutoPtr<FCM::IFCMCalloc> pCalloc = CreateJS::Utils::GetCallocService(pCallback);
+            FCM::AutoPtr<FCM::IFCMCalloc> pCalloc = AnimeJS::Utils::GetCallocService(pCallback);
             ASSERT(pCalloc.m_Ptr != NULL);
 
             FCM::StringRep16 outputString = Utils::ToString16(std::string(buffer), pCallback);

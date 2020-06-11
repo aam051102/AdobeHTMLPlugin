@@ -26,14 +26,14 @@
 
 class JSONNode;
 
-namespace CreateJS
+namespace AnimeJS
 {
     class ITimelineWriter;
 }
 
 /* -------------------------------------------------- Enums */
 
-namespace CreateJS
+namespace AnimeJS
 {
     enum StrokeStyleType
     {
@@ -51,7 +51,7 @@ namespace CreateJS
 
 /* -------------------------------------------------- Structs / Unions */
 
-namespace CreateJS
+namespace AnimeJS
 {
     struct SOLID_STROKE_STYLE
     {
@@ -76,7 +76,7 @@ namespace CreateJS
 
 /* -------------------------------------------------- Class Decl */
 
-namespace CreateJS
+namespace AnimeJS
 {
     class JSONOutputWriter : public IOutputWriter
     {

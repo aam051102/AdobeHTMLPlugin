@@ -31,7 +31,7 @@
 
 /* -------------------------------------------------- Forward Decl */
 
-namespace CreateJS
+namespace AnimeJS
 {
     class ITimelineWriter;
 }
@@ -47,7 +47,7 @@ namespace CreateJS
 
 /* -------------------------------------------------- Class Decl */
 
-namespace CreateJS
+namespace AnimeJS
 {
     class IOutputWriter
     {
