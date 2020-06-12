@@ -49,20 +49,20 @@ namespace AnimeJS
     static const FCM::Float GRADIENT_VECTOR_CONSTANT = 16384.0;
 
     static const char* htmlOutput = 
-        "<!DOCTYPE html>\r\n \
-        <html>\r\n \
-        <head> \r\n\
-            <script src=\"%s/runtime/anime.min.js\"></script>     \r\n\
-            \r\n\
-            <script type=\"text/javascript\"> \r\n\
-            </script> \r\n\
-        </head> \r\n\
-        \r\n\
-        <body> \r\n\
-            <div id=\"canvas\" width=\"%d\" height=\"%d\" style=\"background-color:#%06X\"> \r\n\
-                \r\n\
-            </div> \r\n\
-        </body> \r\n\
+        "<!DOCTYPE html>\
+        <html>\
+        <head>\
+            <script src=\"%s/runtime/anime.min.js\"></script>\
+            \
+            <script type=\"text/javascript\">\
+            </script>\
+        </head>\
+        \
+        <body>\
+            <div id=\"canvas\" width=\"%d\" height=\"%d\" style=\"background-color:#%06X\">\
+                \
+            </div>\
+        </body>\
         </html>";
 
 
@@ -108,18 +108,10 @@ namespace AnimeJS
 
         backColor = (background.red << 16) | (background.green << 8) | (background.blue);
         sprintf(m_HTMLOutput, htmlOutput, 
-            RUNTIME_FOLDER_NAME, 
-            RUNTIME_FOLDER_NAME, 
             RUNTIME_FOLDER_NAME,
-            RUNTIME_FOLDER_NAME,
-            RUNTIME_FOLDER_NAME,
-            RUNTIME_FOLDER_NAME,
-            RUNTIME_FOLDER_NAME,
-            RUNTIME_FOLDER_NAME,
-            RUNTIME_FOLDER_NAME,
-            RUNTIME_FOLDER_NAME,
-            RUNTIME_FOLDER_NAME,
-            m_outputJSONFileName.c_str(), fps, stageWidth, stageHeight, backColor);
+            stageWidth,
+            stageHeight,
+            backColor);
 
         return FCM_SUCCESS;
     }
