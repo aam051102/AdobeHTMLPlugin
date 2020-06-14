@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <ExtensionManifest Version="4.0" ExtensionBundleId="com.mad.AnimeJS" ExtensionBundleVersion="1.0.1" ExtensionBundleName="AnimeJS" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <ExtensionList>

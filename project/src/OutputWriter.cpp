@@ -49,20 +49,20 @@ namespace AnimeJS
     static const FCM::Float GRADIENT_VECTOR_CONSTANT = 16384.0;
 
     static const char* htmlOutput = 
-        "<!DOCTYPE html>\
-        <html>\
-        <head>\
-            <script src=\"%s/runtime/anime.min.js\"></script>\
-            \
-            <script type=\"text/javascript\">\
-            </script>\
-        </head>\
-        \
-        <body>\
-            <div id=\"canvas\" width=\"%d\" height=\"%d\" style=\"background-color:#%06X\">\
-                \
-            </div>\
-        </body>\
+        "<!DOCTYPE html>\n\
+        <html>\n\
+        <head>\n\
+            <script src=\"%s/runtime/anime.min.js\"></script>\n\
+            \n\
+            <script type=\"text/javascript\">\n\
+            </script>\n\
+        </head>\n\
+        \n\
+        <body>\n\
+            <div id=\"canvas\" width=\"%d\" height=\"%d\" style=\"background-color:#%06X\">\n\
+                \n\
+            </div>\n\
+        </body>\n\
         </html>";
 
 
@@ -132,11 +132,13 @@ namespace AnimeJS
         JSONNode firstNode(JSON_NODE);
         firstNode.push_back(*m_pRootNode);
 
-        file << firstNode.write_formatted();
+        file << firstNode.write();
+        //file << firstNode.write_formatted();
         file.close();
 
         // Write the HTML file (overwrite file if it already exists)
         Utils::OpenFStream(m_outputHTMLFile, file, std::ios_base::trunc|std::ios_base::out, m_pCallback);
+        
 
         file << m_HTMLOutput;
         file.close();
@@ -1787,20 +1789,28 @@ namespace AnimeJS
 
         std::string scriptWithLayerNumber = "script Layer" +  Utils::ToString(layerNum);
 
+        JSONNode textElem(JSON_NODE);
+        std::string::size_type i = 0;
+
+        // Escaping \n
         std::string find = "\n";
         std::string replace = "\\n";
-        std::string::size_type i =0;
-        JSONNode textElem(JSON_NODE);
 
-        while (true) {
-            /* Locate the substring to replace. */
-            i = script.find(find, i);
-           
-            if (i == std::string::npos) break;
-            /* Make the replacement. */
+        while ((i = script.find(find, i)) != std::string::npos) {
             script.replace(i, find.length(), replace);
 
-            /* Advance index forward so the next iteration doesn't pick it up as well. */
+            i += replace.length();
+        }
+
+        // Escaping \t
+        i = 0;
+        find = "\t";
+        replace = "\\t";
+
+        while ((i = script.find(find, i)) != std::string::npos)
+        {
+            script.replace(i, find.length(), replace);
+
             i += replace.length();
         }
 

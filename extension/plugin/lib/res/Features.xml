@@ -172,7 +172,7 @@
 			<Value name="Speech" supported ="true"/>
 		</Property>
 	</Feature>
-	<Feature name="ActionScript" supported="true">
+	<Feature name="ActionScript" supported="false">
 	</Feature>
 	<Feature name="Layer" supported="true">
 		<Property name="MaskLayer" supported="true"/>

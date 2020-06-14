@@ -85,5 +85,5 @@ workspace "AdobeHTMLPlugin"
             postbuildcommands {
                 "if exist \"$(SolutionDir)extension\\plugin\\lib\\win\\$(TargetName).fcm\" del /Q \"$(SolutionDir)extension\\plugin\\lib\\win\\$(TargetName).fcm\"",
                 "ren \"$(SolutionDir)extension\\plugin\\lib\\win\\$(TargetName).dll\" \"$(TargetName).fcm\"",
-                "node \"$(SolutionDir)package.json\""
+                "node \"$(SolutionDir)index.js\""
             }
