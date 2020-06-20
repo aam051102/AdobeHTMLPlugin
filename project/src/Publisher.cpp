@@ -59,7 +59,8 @@
 #include "Utils/ILinearColorGradient.h"
 #include "Utils/IRadialColorGradient.h"
 
-#include "OutputWriter.h"
+//#include "OutputWriter.h"
+#include "ScriptOutputWriter.h"
 
 #include "Exporter/Service/IResourcePalette.h"
 #include "Exporter/Service/ITimelineBuilder2.h"
@@ -185,7 +186,8 @@ namespace AnimeJS
         FCM::U_Int32 timelineCount;
 
         // Create a output writer
-        std::auto_ptr<IOutputWriter> pOutputWriter(new JSONOutputWriter(GetCallback()));
+        //std::auto_ptr<IOutputWriter> pOutputWriter(new JSONOutputWriter(GetCallback()));
+        std::auto_ptr<IOutputWriter> pOutputWriter(new ScriptOutputWriter(GetCallback()));
         if (pOutputWriter.get() == NULL)
         {
             return FCM_MEM_NOT_AVAILABLE;
@@ -1950,7 +1952,8 @@ namespace AnimeJS
 
         m_pOutputWriter->StartDefineTimeline();
 
-        m_pTimelineWriter = new JSONTimelineWriter(GetCallback());
+        //m_pTimelineWriter = new JSONTimelineWriter(GetCallback());
+        m_pTimelineWriter = new ScriptTimelineWriter(GetCallback());
         ASSERT(m_pTimelineWriter);
     }
 

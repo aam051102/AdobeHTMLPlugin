@@ -33,7 +33,7 @@
 #include "FrameElement/IClassicText.h"
 #include "FrameElement/ITextStyle.h"
 #include "Exporter/Service/IFrameCommandGenerator.h"
-#include "OutputWriter.h"
+#include "ScriptOutputWriter.h"
 #include "PluginConfiguration.h"
 
 /* -------------------------------------------------- Forward Decl */
