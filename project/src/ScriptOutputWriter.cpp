@@ -48,7 +48,7 @@ namespace AnimeJS
 
     static const FCM::Float GRADIENT_VECTOR_CONSTANT = 16384.0;
 
-    static const char* htmlOutput =
+    std::string htmlOutput =
         "<!DOCTYPE html>\n\
         <html>\n\
         <head>\n\
@@ -59,12 +59,8 @@ namespace AnimeJS
             <script src=\"./script.js\"></script>\n\
         </head>\n\
         \n\
-        <body>\n\
-            <div id=\"canvas\" width=\"%d\" height=\"%d\" style=\"background-color:#%06X\">\n\
-                \n\
-            </div>\n\
-        </body>\n\
-        </html>";
+        <body style=\"margin: 0;\">\n\
+            <div id=\"canvas\" style=\"width: %dpx; height: %dpx; background-color:#%06X; overflow: hidden;\">\n";
 
 
     /* -------------------------------------------------- ScriptOutputWriter */
@@ -102,14 +98,14 @@ namespace AnimeJS
     {
         FCM::U_Int32 backColor;
 
-        m_HTMLOutput = new char[strlen(htmlOutput) + FILENAME_MAX + strlen(RUNTIME_FOLDER_NAME) + 50];
+        m_HTMLOutput = new char[htmlOutput.size() + FILENAME_MAX + strlen(RUNTIME_FOLDER_NAME) + 50];
         if (m_HTMLOutput == NULL)
         {
             return FCM_MEM_NOT_AVAILABLE;
         }
 
         backColor = (background.red << 16) | (background.green << 8) | (background.blue);
-        sprintf(m_HTMLOutput, htmlOutput,
+        sprintf(m_HTMLOutput, htmlOutput.c_str(),
             RUNTIME_FOLDER_NAME,
             fps,
             stageWidth,
@@ -139,12 +135,13 @@ namespace AnimeJS
 
         std::string scriptOutput;
 
+        std::string HTMLBody = "";
+
         // Start conversion from JSON to script here
 
         scriptOutput += "\
 document.addEventListener('DOMContentLoaded', function() {\n\
-    const canvas = document.querySelector('#canvas');\n\
-    canvas.innerHTML += `";
+    const canvas = document.querySelector('#canvas');\n";
 
         // Shapes
         for (int i = 0; i < m_pShapeArray->size(); i++)
@@ -181,7 +178,7 @@ document.addEventListener('DOMContentLoaded', function() {\n\
                 elCharid.c_str()
             );
 
-            scriptOutput += std::string(el);
+            HTMLBody += std::string(el);
         }
 
         // Images
@@ -192,7 +189,7 @@ document.addEventListener('DOMContentLoaded', function() {\n\
             std::string elHeight = m_pBitmapArray->at(i).at("height").as_string();
             std::string elBitmapPath = m_pBitmapArray->at(i).at("bitmapPath").as_string();
 
-            std::string elBase = "\<div class='el_%s' style='background-image: url(\"%s\"); width: %spx; height: %spx;'></div>\n";
+            std::string elBase = "<div class=\"el_%s\" style=\"background-image: url('%s'); width: %spx; height: %spx;\"></div>\n";
             char* el = new char[elBase.size() + FILENAME_MAX +
                 elCharid.size() +
                 elBitmapPath.size() +
@@ -206,10 +203,57 @@ document.addEventListener('DOMContentLoaded', function() {\n\
                 elHeight.c_str()
             );
 
-            scriptOutput += std::string(el);
+            HTMLBody += std::string(el);
         }
 
-        scriptOutput += "`;";
+        // Text
+        for (int i = 0; i < m_pTextArray->size(); i++)
+        {
+            std::string elCharid = m_pTextArray->at(i).at("charid").as_string();
+            std::string elDisplayText = m_pTextArray->at(i).at("displayText").as_string();
+            std::string elFont = m_pTextArray->at(i).at("font").as_string();
+            std::string elColor = m_pTextArray->at(i).at("color").as_string();
+
+
+            // Split font information
+            std::string elementFontInfo[3] = { "", "", "" };
+            size_t fontOffset = 0;
+            size_t fontOffsetNew = 0;
+
+            for (int j = 0; j < 3; j++)
+            {
+                fontOffsetNew = elFont.find(" ", fontOffset);
+                elementFontInfo[j] = elFont.substr(fontOffset, fontOffsetNew);
+
+                if (elementFontInfo[j] == "")
+                {
+                    elementFontInfo[j] = "inherit";
+                }
+
+                fontOffset = fontOffsetNew + 1;
+            }
+
+            std::string elBase = "<p class=\"txt_%s\" style=\"margin: 0; font-weight: %s; font-size: %s; font-family: %s; color: %s;\">%s</p>\n";
+            char* el = new char[elBase.size() + FILENAME_MAX +
+                elCharid.size() +
+                elementFontInfo[0].size() +
+                elementFontInfo[1].size() +
+                elementFontInfo[2].size() +
+                elColor.size() +
+                elDisplayText.size()
+            ];
+
+            sprintf(el, elBase.c_str(),
+                elCharid.c_str(),
+                elementFontInfo[0].c_str(),
+                elementFontInfo[1].c_str(),
+                elementFontInfo[2].c_str(),
+                elColor.c_str(),
+                elDisplayText.c_str()
+            );
+
+            HTMLBody += std::string(el);
+        }
 
         // Sounds
         for (int i = 0; i < m_pSoundArray->size(); i++)
@@ -217,7 +261,7 @@ document.addEventListener('DOMContentLoaded', function() {\n\
             std::string elCharid = m_pSoundArray->at(i).at("charid").as_string();
             std::string elSoundPath = m_pSoundArray->at(i).at("soundPath").as_string();
 
-            std::string elBase = "\const el_%s = new Audio('%s');\n";
+            std::string elBase = "\const snd_%s = new Audio('%s');\n";
             char* el = new char[elBase.size() + FILENAME_MAX +
                 elCharid.size() +
                 elSoundPath.size()
@@ -236,12 +280,11 @@ document.addEventListener('DOMContentLoaded', function() {\n\
         {
             JSONNode elFrames = m_pTimelineArray->at(i).at("Frame");
 
-            std::string elCharid = "";
-            if (m_pTimelineArray->at(i).find("charid") != m_pTimelineArray->end()) elCharid = m_pTimelineArray->at(i).at("charid").as_string();
+            std::string elTlCharid = "main";
+            if (m_pTimelineArray->at(i).find("charid") != m_pTimelineArray->at(i).end()) elTlCharid = m_pTimelineArray->at(i).at("charid").as_string();
             
 
-            scriptOutput += "\
-const timeline_" + std::to_string(i) + " = anime.timeline({\
+            scriptOutput += "const tl_" + elTlCharid + " = anime.timeline({\
     duration: 1,\
     autoplay: false,\
 });";
@@ -258,22 +301,46 @@ const timeline_" + std::to_string(i) + " = anime.timeline({\
 
                     std::string elCmdType = elCommand.at("cmdType").as_string();
 
+                    scriptOutput += "tl_" + elTlCharid + ".add({";
+
                     if (elCmdType == "Place")
                     {
                         std::string elCharid = elCommand.at("charid").as_string();
                         std::string elObjectId = elCommand.at("objectId").as_string();
-                        std::string elPlaceAfter = elCommand.at("placeAfter").as_string();
-                        std::string elTransformMatrix = elCommand.at("transformMatrix").as_string();
 
+                        if (elCommand.find("placeAfter") != elCommand.end())
+                        {
+                            // "Place" command for non-audio
+                            std::string elPlaceAfter = elCommand.at("placeAfter").as_string();
+                            std::string elTransformMatrix = elCommand.at("transformMatrix").as_string();
+
+                            scriptOutput += "begin: () => {";
+
+                            if (elPlaceAfter == "0")
+                            {
+                                scriptOutput += "document.querySelector('.el_" + elPlaceAfter + "').parentNode.appendChild(document.querySelector('.el_" + elCharid + "'));";
+                            }
+                            else
+                            {
+                                scriptOutput += "insertAfter(document.querySelector('.el_" + elCharid + "'), document.querySelector('.el_" + elPlaceAfter + "'));";
+                            }
+
+                            scriptOutput += "},";
+                        }
+                        else
+                        {
+                            // "Place" command for audio
+
+                        }
                     }
 
+                    scriptOutput += "}, " + elFrameNum + ");";
                 }
             }
         }
 
 
         scriptOutput += "\
-    \
     let elapsed, now, then, fpsInterval, startTime;\
 \
     const startAnimation = () => {\
@@ -281,7 +348,15 @@ const timeline_" + std::to_string(i) + " = anime.timeline({\
         then = Date.now(); \
         startTime = then; \
         requestAnimationFrame(loop); \
-    }\
+    };\
+\
+    const insertAfter = (newNode, referenceNode) => {\
+        if(referenceNode.nextSibling) {\
+            referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);\
+        } else {\
+            referenceNode.parentNode.appendChild(newNode);\
+        }\
+    };\
 \
     const loop = (t) => {\
         requestAnimationFrame(loop);\
@@ -293,7 +368,7 @@ const timeline_" + std::to_string(i) + " = anime.timeline({\
         {\
             then = now - (elapsed % fpsInterval); \
 \
-            animation.tick(1);\
+            tl_main.tick(Math.round(elapsed));\
         }\
     };\
 \
@@ -313,6 +388,10 @@ const timeline_" + std::to_string(i) + " = anime.timeline({\
 
 
         file << m_HTMLOutput;
+
+        file << HTMLBody;
+
+        file << "</div></body></html>";
         file.close();
 
         delete[] m_HTMLOutput;
