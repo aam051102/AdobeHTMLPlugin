@@ -1,4 +1,6 @@
 node_modules/
+
+# Generated files
 *.sln
 *.vcxproj
 *.vcxproj.*
@@ -9,11 +11,20 @@ conaninfo.txt
 graph_info.json
 .vs/
 .rnd
+
+# Outputs
 build/*
 project/obj/
 debug/
+
+# Externals
+exman/*
+extension/Runtime/runtime/anime.min.js
+premake5.exe
+
+# Generated extension files and
 extension/plugin/lib/**/*.exp
 extension/plugin/lib/**/*.fcm
 extension/plugin/lib/**/*.lib
+extension/plugin/lib/**/*.ilk
 extension/plugin/lib/**/*.pdb
-extension/Runtime/runtime/anime.min.js

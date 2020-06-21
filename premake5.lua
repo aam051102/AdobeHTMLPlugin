@@ -64,6 +64,14 @@ workspace "AdobeHTMLPlugin"
             "$(SolutionDir)project/lib/ThirdParty/mongoose"
         }
 
+        postbuildcommands {
+            "if exist \"$(SolutionDir)extension\\plugin\\lib\\win\\$(TargetName).fcm\" del /Q \"$(SolutionDir)extension\\plugin\\lib\\win\\$(TargetName).fcm\"",
+            "ren \"$(SolutionDir)extension\\plugin\\lib\\win\\$(TargetName).dll\" \"$(TargetName).fcm\"",
+            "fc /b \"$(SolutionDir)node_modules\\animejs\\lib\\anime.min.js\" \"$(SolutionDir)extension\\Runtime\\runtime\\anime.min.js\" > nul",
+            "if errorlevel 1 ( copy \"$(SolutionDir)node_modules\\animejs\\lib\\anime.min.js\" \"$(SolutionDir)extension\\Runtime\\runtime\\anime.min.js\" )",
+            "call node \"$(SolutionDir)index.js\"",
+        }
+
         filter "configurations:Debug"
             defines "_DEBUG"
             runtime "Debug"
@@ -71,6 +79,12 @@ workspace "AdobeHTMLPlugin"
 
             defines {
                 "DEBUG"
+            }
+
+            postbuildcommands {
+                "ren \"$(SolutionDir)build\\*.zxp\" \"$(TargetName).zxp\"",
+                "cd \"$(SolutionDir)exman\"",
+                "call ExManCmd.exe /install \"$(SolutionDir)build\\$(TargetName).zxp\""
             }
         
         filter "configurations:Release"
@@ -80,10 +94,4 @@ workspace "AdobeHTMLPlugin"
 
             defines {
                 "NDEBUG"
-            }
-
-            postbuildcommands {
-                "if exist \"$(SolutionDir)extension\\plugin\\lib\\win\\$(TargetName).fcm\" del /Q \"$(SolutionDir)extension\\plugin\\lib\\win\\$(TargetName).fcm\"",
-                "ren \"$(SolutionDir)extension\\plugin\\lib\\win\\$(TargetName).dll\" \"$(TargetName).fcm\"",
-                "node \"$(SolutionDir)index.js\""
             }
