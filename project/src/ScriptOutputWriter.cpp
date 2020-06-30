@@ -13,6 +13,8 @@
 #include "PluginConfiguration.h"
 
 #include <cstring>
+#include <vector>
+#include <map>
 #include <fstream>
 #include "ApplicationFCMPublicIDs.h"
 #include "FCMPluginInterface.h"
@@ -276,6 +278,11 @@ document.addEventListener('DOMContentLoaded', function() {\n\
         }
 
         // Timeline
+        std::map<int, std::vector<int>> layers = {};
+        int curFrame = 0;
+
+        scriptOutput += "const frames = [";
+
         for (int i = 0; i < m_pTimelineArray->size(); i++)
         {
             JSONNode elFrames = m_pTimelineArray->at(i).at("Frame");
@@ -283,15 +290,14 @@ document.addEventListener('DOMContentLoaded', function() {\n\
             std::string elTlCharid = "main";
             if (m_pTimelineArray->at(i).find("charid") != m_pTimelineArray->at(i).end()) elTlCharid = m_pTimelineArray->at(i).at("charid").as_string();
             
-
-            scriptOutput += "const tl_" + elTlCharid + " = anime.timeline({\
-    duration: 1,\
-    autoplay: false,\
-});";
-
             for (int j = 0; j < elFrames.size(); j++)
             {
-                std::string elFrameNum = elFrames.at(j).at("num").as_string();
+                int elFrameNum = elFrames.at(j).at("num").as_int();
+
+                if (layers.find(elFrameNum) == layers.end())
+                {
+                    layers.insert(std::pair<int, std::vector<int>>(elFrameNum, {}));
+                }
 
                 JSONNode elCommands = elFrames.at(j).at("Command");
 
@@ -301,7 +307,7 @@ document.addEventListener('DOMContentLoaded', function() {\n\
 
                     std::string elCmdType = elCommand.at("cmdType").as_string();
 
-                    scriptOutput += "tl_" + elTlCharid + ".add({";
+                    scriptOutput += "() => {";
 
                     if (elCmdType == "Place")
                     {
@@ -314,7 +320,6 @@ document.addEventListener('DOMContentLoaded', function() {\n\
                             std::string elPlaceAfter = elCommand.at("placeAfter").as_string();
                             std::string elTransformMatrix = elCommand.at("transformMatrix").as_string();
 
-                            scriptOutput += "begin: () => {";
 
                             if (elPlaceAfter == "0")
                             {
@@ -324,30 +329,71 @@ document.addEventListener('DOMContentLoaded', function() {\n\
                             {
                                 scriptOutput += "insertAfter(document.querySelector('.el_" + elCharid + "'), document.querySelector('.el_" + elPlaceAfter + "'));";
                             }
-
-                            scriptOutput += "},";
                         }
                         else
                         {
                             // "Place" command for audio
 
                         }
+
                     }
 
-                    scriptOutput += "}, " + elFrameNum + ");";
+                    scriptOutput += "},";
+
+                    layers[elFrameNum].push_back(curFrame);
+                    curFrame++;
                 }
             }
         }
+        
+        scriptOutput += "];";
+
+        // Timeline ID's
+        scriptOutput += "const layers = [";
+        
+        for (std::map<int, std::vector<int>>::iterator it = layers.begin(); it != layers.end(); it++)
+        {
+            if (layers[it->first].size() == 0)
+            {
+                scriptOutput += "null,";
+            }
+            else
+            {
+                scriptOutput += "[";
+
+                for (int j = 0; j < layers[it->first].size(); j++)
+                {
+                    scriptOutput += std::to_string(layers[it->first][j]);
+                    scriptOutput += ",";
+                }
+
+                scriptOutput += "],";
+            }
+        }
+
+        scriptOutput += "];";
 
 
         scriptOutput += "\
+    let frame = 0;\
     let elapsed, now, then, fpsInterval, startTime;\
 \
     const startAnimation = () => {\
         fpsInterval = 1000 / FPS; \
         then = Date.now(); \
         startTime = then; \
+        callLayers();\
         requestAnimationFrame(loop); \
+    };\
+\
+    const callLayers = () => {\
+        if (layers.length > frame && layers[frame])\
+        {\
+            for (let i = 0; i < layers[frame].length; i++)\
+            {\
+                frames[layers[frame][i]]();\
+            }\
+        }\
     };\
 \
     const insertAfter = (newNode, referenceNode) => {\
@@ -367,12 +413,12 @@ document.addEventListener('DOMContentLoaded', function() {\n\
         if (elapsed > fpsInterval)\
         {\
             then = now - (elapsed % fpsInterval); \
-\
-            tl_main.tick(Math.round(elapsed));\
+\           frame++;\
+            callLayers();\
         }\
     };\
 \
-    startAnimation()";
+    startAnimation();";
 
 
         scriptOutput += "\
